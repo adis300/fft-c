@@ -9,12 +9,12 @@
 void discrete_fourier_transform()
 {
     int n = 201; // 10 seconds of data, n has to be greater than 1
-    float sample_rate = 20; // signal sampling rate
-    float f = 2;    // frequency of the artifical signal
+    double sample_rate = 20; // signal sampling rate
+    double f = 2;    // frequency of the artifical signal
     int ifac[IFAC];
-    float * input = (float*) alloca(n * sizeof(float));   //Input signal
+    double * input = (double *) alloca(n * sizeof(double));   //Input signal
     for(int i = 0; i < n; i ++) input[i] = sin(2 * PI * f * i/sample_rate);
-    float * wsave = (float*) alloca((2 * n + IFAC) * sizeof(float));  //Initialize a working space with length at least 2*n + 15
+    double * wsave = (double *) alloca((2 * n + IFAC) * sizeof(double));  //Initialize a working space with length at least 2*n + 15
 
     fft_real_init(n, wsave, ifac);
     fft_real_forward(n, input, wsave, ifac);

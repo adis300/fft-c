@@ -37,18 +37,18 @@ extern "C" {
 #endif
 
 // Initialization real fft transform (__ogg_fdrffti)
-void fft_real_init(int n, double *wsave, int *ifac);
+void fft_real_init(int n, float *wsave, int *ifac);
 // Forward transform of a real periodic sequence (__ogg_fdrfftf)
-void fft_real_forward(int n,double *r,double *wsave,int *ifac);
+void fft_real_forward(int n,float *r,float *wsave,int *ifac);
 // Real FFT backward (__ogg_fdrfftb)
-void fft_real_backward(int n, double *r, double *wsave, int *ifac); 
+void fft_real_backward(int n, float *r, float *wsave, int *ifac); 
 
 // Initialize cosine quarter-wave transform (__ogg_fdcosqi)
-void fft_cosq_init(int n, double *wsave, int *ifac);
+void fft_cosq_init(int n, float *wsave, int *ifac);
 // Real cosine quarter-wave forward transform (__ogg_fdcosqf)
-void fft_cosq_forward(int n,double *x,double *wsave,int *ifac);
+void fft_cosq_forward(int n,float *x,float *wsave,int *ifac);
 // Real cosine quarter-wave backward transform (__ogg_fdcosqb)
-void fft_cosq_backward(int n,double *x,double *wsave,int *ifac);
+void fft_cosq_backward(int n,float *x,float *wsave,int *ifac);
 
 #ifdef __cplusplus
 }

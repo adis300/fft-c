@@ -49,10 +49,10 @@
 
 #include <math.h>
 
-static void drfti1(int n, double *wa, int *ifac){
+static void drfti1(int n, float *wa, int *ifac){
   static int ntryh[4] = { 4,2,3,5 };
-  static double tpi = 6.28318530717958647692528676655900577;
-  double arg,argh,argld,fi;
+  static float tpi = 6.28318530717958647692528676655900577;
+  float arg,argh,argld,fi;
   int ntry=0,i,j=-1;
   int k1, l1, l2, ib;
   int ld, ii, ip, is, nq, nr;
@@ -105,7 +105,7 @@ static void drfti1(int n, double *wa, int *ifac){
     for (j=0;j<ipm;j++){
       ld+=l1;
       i=is;
-      argld=(double)ld*argh;
+      argld=(float)ld*argh;
       fi=0.;
       for (ii=2;ii<ido;ii+=2){
 	fi+=1.;
@@ -120,7 +120,7 @@ static void drfti1(int n, double *wa, int *ifac){
 }
 
 // Initialization real fft transform
-void fft_real_init(int n, double *wsave, int *ifac){
+void fft_real_init(int n, float *wsave, int *ifac){
     drfti1(n, wsave+n, ifac);
 }
 /*
@@ -132,10 +132,10 @@ void __ogg_fdrffti(int n, float *wsave, int *ifac){
 
 // Real quater-cosine initialization
 //void __ogg_fdcosqi(int n, float *wsave, int *ifac){
-void fft_cosq_init(int n, double *wsave, int *ifac){
-  static double pih = 1.57079632679489661923132169163975;
+void fft_cosq_init(int n, float *wsave, int *ifac){
+  static float pih = 1.57079632679489661923132169163975;
   static int k;
-  static double fk, dt;
+  static float fk, dt;
 
   dt=pih/n;
   fk=0.;
@@ -147,9 +147,9 @@ void fft_cosq_init(int n, double *wsave, int *ifac){
   fft_real_init(n, wsave+n,ifac);
 }
 
-static void dradf2(int ido,int l1,double *cc,double *ch,double *wa1){
+static void dradf2(int ido,int l1,float *cc,float *ch,float *wa1){
   int i,k;
-  double ti2,tr2;
+  float ti2,tr2;
   int t0,t1,t2,t3,t4,t5,t6;
   
   t1=0;
@@ -202,11 +202,11 @@ static void dradf2(int ido,int l1,double *cc,double *ch,double *wa1){
   }
 }
 
-static void dradf4(int ido,int l1,double *cc,double *ch,double *wa1,
-	    double *wa2,double *wa3){
-  static double hsqt2 = .70710678118654752440084436210485;
+static void dradf4(int ido,int l1,float *cc,float *ch,float *wa1,
+	    float *wa2,float *wa3){
+  static float hsqt2 = .70710678118654752440084436210485;
   int i,k,t0,t1,t2,t3,t4,t5,t6;
-  double ci2,ci3,ci4,cr2,cr3,cr4,ti1,ti2,ti3,ti4,tr1,tr2,tr3,tr4;
+  float ci2,ci3,ci4,cr2,cr3,cr4,ti1,ti2,ti3,ti4,tr1,tr2,tr3,tr4;
   t0=l1*ido;
   
   t1=t0;
@@ -299,18 +299,18 @@ static void dradf4(int ido,int l1,double *cc,double *ch,double *wa1,
   }
 }
 
-static void dradfg(int ido,int ip,int l1,int idl1,double *cc,double *c1,
-			  double *c2,double *ch,double *ch2,double *wa){
+static void dradfg(int ido,int ip,int l1,int idl1,float *cc,float *c1,
+			  float *c2,float *ch,float *ch2,float *wa){
 
-  static double tpi=6.28318530717958647692528676655900577;
+  static float tpi=6.28318530717958647692528676655900577;
   int idij,ipph,i,j,k,l,ic,ik,is;
   int t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10;
-  double dc2,ai1,ai2,ar1,ar2,ds2;
+  float dc2,ai1,ai2,ar1,ar2,ds2;
   int nbd;
-  double dcp,arg,dsp,ar1h,ar2h;
+  float dcp,arg,dsp,ar1h,ar2h;
   int idp2,ipp2;
   
-  arg=tpi/(double)ip;
+  arg=tpi/(float)ip;
   dcp=cos(arg);
   dsp=sin(arg);
   ipph=(ip+1)>>1;
@@ -601,7 +601,7 @@ L119:
   }
 }
 
-static void drftf1(int n,double *c,double *ch,double *wa,int *ifac){
+static void drftf1(int n,float *c,float *ch,float *wa,int *ifac){
   int i,k1,l1,l2;
   int na,kh,nf;
   int ip,iw,ido,idl1,ix2,ix3;
@@ -663,7 +663,7 @@ static void drftf1(int n,double *c,double *ch,double *wa,int *ifac){
 }
 
 // Real forward transform
-void fft_real_forward(int n,double *r,double *wsave,int *ifac){
+void fft_real_forward(int n,float *r,float *wsave,int *ifac){
     drftf1(n,r,wsave,wsave+n,ifac);
 }
 /*
@@ -673,10 +673,10 @@ void __ogg_fdrfftf(int n,float *r,float *wsave,int *ifac){
 }
 */
 
-static void dcsqf1(int n,double *x,double *w,double *xh,int *ifac){
+static void dcsqf1(int n,float *x,float *w,float *xh,int *ifac){
   int modn,i,k,kc;
   int np2,ns2;
-  double xim1;
+  float xim1;
 
   ns2=(n+1)>>1;
   np2=n;
@@ -710,9 +710,9 @@ static void dcsqf1(int n,double *x,double *w,double *xh,int *ifac){
 
 // Real quarter-cosine forward 
 // void __ogg_fdcosqf(int n,float *x,float *wsave,int *ifac){
-void fft_cosq_forward(int n,double *x,double *wsave,int *ifac){
-    static double sqrt2=1.4142135623730950488016887242097;
-    double tsqx;
+void fft_cosq_forward(int n,float *x,float *wsave,int *ifac){
+    static float sqrt2=1.4142135623730950488016887242097;
+    float tsqx;
 
   switch(n){
   case 0:case 1:
@@ -728,9 +728,9 @@ void fft_cosq_forward(int n,double *x,double *wsave,int *ifac){
   }
 }
 
-static void dradb2(int ido,int l1,double *cc,double *ch,double *wa1){
+static void dradb2(int ido,int l1,float *cc,float *ch,float *wa1){
   int i,k,t0,t1,t2,t3,t4,t5,t6;
-  double ti2,tr2;
+  float ti2,tr2;
 
   t0=l1*ido;
   
@@ -780,12 +780,12 @@ L105:
   }
 }
 
-static void dradb3(int ido,int l1,double *cc,double *ch,double *wa1,
-			  double *wa2){
-  static double taur = -.5;
-  static double taui = .86602540378443864676372317075293618;
+static void dradb3(int ido,int l1,float *cc,float *ch,float *wa1,
+			  float *wa2){
+  static float taur = -.5;
+  static float taui = .86602540378443864676372317075293618;
   int i,k,t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10;
-  double ci2,ci3,di2,di3,cr2,cr3,dr2,dr3,ti2,tr2;
+  float ci2,ci3,di2,di3,cr2,cr3,dr2,dr3,ti2,tr2;
   t0=l1*ido;
 
   t1=0;
@@ -843,11 +843,11 @@ static void dradb3(int ido,int l1,double *cc,double *ch,double *wa1,
   }
 }
 
-static void dradb4(int ido,int l1,double *cc,double *ch,double *wa1,
-			  double *wa2,double *wa3){
-  static double sqrt2=1.4142135623730950488016887242097;
+static void dradb4(int ido,int l1,float *cc,float *ch,float *wa1,
+			  float *wa2,float *wa3){
+  static float sqrt2=1.4142135623730950488016887242097;
   int i,k,t0,t1,t2,t3,t4,t5,t6,t7,t8;
-  double ci2,ci3,ci4,cr2,cr3,cr4,ti1,ti2,ti3,ti4,tr1,tr2,tr3,tr4;
+  float ci2,ci3,ci4,cr2,cr3,cr4,ti1,ti2,ti3,ti4,tr1,tr2,tr3,tr4;
   t0=l1*ido;
   
   t1=0;
@@ -934,19 +934,19 @@ static void dradb4(int ido,int l1,double *cc,double *ch,double *wa1,
   }
 }
 
-static void dradbg(int ido,int ip,int l1,int idl1,double *cc,double *c1,
-	    double *c2,double *ch,double *ch2,double *wa){
-  static double tpi=6.28318530717958647692528676655900577;
+static void dradbg(int ido,int ip,int l1,int idl1,float *cc,float *c1,
+	    float *c2,float *ch,float *ch2,float *wa){
+  static float tpi=6.28318530717958647692528676655900577;
   int idij,ipph,i,j,k,l,ik,is,t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,
       t11,t12;
-  double dc2,ai1,ai2,ar1,ar2,ds2;
+  float dc2,ai1,ai2,ar1,ar2,ds2;
   int nbd;
-  double dcp,arg,dsp,ar1h,ar2h;
+  float dcp,arg,dsp,ar1h,ar2h;
   int ipp2;
 
   t10=ip*ido;
   t0=l1*ido;
-  arg=tpi/(double)ip;
+  arg=tpi/(float)ip;
   dcp=cos(arg);
   dsp=sin(arg);
   nbd=(ido-1)>>1;
@@ -1248,7 +1248,7 @@ L132:
   }
 }
 
-static void drftb1(int n, double *c, double *ch, double *wa, int *ifac){
+static void drftb1(int n, float *c, float *ch, float *wa, int *ifac){
   int i,k1,l1,l2;
   int na;
   int nf,ip,iw,ix2,ix3,ido,idl1;
@@ -1326,7 +1326,7 @@ static void drftb1(int n, double *c, double *ch, double *wa, int *ifac){
   for(i=0;i<n;i++)c[i]=ch[i];
 }
 
-void fft_real_backward(int n, double *r, double *wsave, int *ifac){
+void fft_real_backward(int n, float *r, float *wsave, int *ifac){
     drftb1(n, r, wsave, wsave+n, ifac);
 }
 /*
@@ -1336,10 +1336,10 @@ void __ogg_fdrfftb(int n, float *r, float *wsave, int *ifac){
 }
 */
 
-static void dcsqb1(int n,double *x,double *w,double *xh,int *ifac){
+static void dcsqb1(int n,float *x,float *w,float *xh,int *ifac){
   int modn,i,k,kc;
   int np2,ns2;
-  double xim1;
+  float xim1;
 
   ns2=(n+1)>>1;
   np2=n;
@@ -1375,9 +1375,9 @@ static void dcsqb1(int n,double *x,double *w,double *xh,int *ifac){
 }
 
 // Real quater-cosine backward transform
-void fft_cosq_backward(int n,double *x,double *wsave,int *ifac){
-  static double tsqrt2 = 2.8284271247461900976033774484194;
-  double x1;
+void fft_cosq_backward(int n,float *x,float *wsave,int *ifac){
+  static float tsqrt2 = 2.8284271247461900976033774484194;
+  float x1;
 
   if(n<2){
     x[0]*=4;
