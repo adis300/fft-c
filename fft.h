@@ -76,11 +76,14 @@ void __fft_cosq_backward(int n,double *x,double *wsave,int *ifac);
 // Wrapper method with all fftpack parameters properly initilized
 FFTTransformer * create_fft_transformer(int signal_length, int scale_output){
     FFTTransformer * transformer = (FFTTransformer *) malloc(sizeof(FFTTransformer));
-    transformer -> ifac = (int *) calloc(15, sizeof(int));
+    transformer -> ifac = (int *) calloc(FFT_IFAC, sizeof(int));
     transformer -> output = (double *) malloc((2 * signal_length + 15) * sizeof(double));
     transformer -> n = signal_length;
     if(scale_output == FFT_SCALED_OUTPUT) transformer -> scale_output = FFT_SCALED_OUTPUT;
     else transformer -> scale_output = FFT_UNSCALED_OUTPUT;
+    
+    __fft_real_init(transformer -> n, transformer -> output, transformer -> ifac);
+
     return transformer;
 }
 
@@ -111,11 +114,14 @@ double * fft_backward(FFTTransformer * transformer, double* input){
 
 FFTCosqTransformer * create_fft_cosq_transformer(int signal_length, int scale_output){
     FFTCosqTransformer * transformer = (FFTCosqTransformer *) malloc(sizeof(FFTCosqTransformer));
-    transformer -> ifac = (int *) calloc(15, sizeof(int));
-    transformer -> output = (double *) malloc((3 * signal_length + 15) * sizeof(double));
+    transformer -> ifac = (int *) calloc(FFT_IFAC, sizeof(int));
+    transformer -> output = (double *) malloc((3 * signal_length + FFT_IFAC) * sizeof(double));
     transformer -> n = signal_length;
     if(scale_output == FFT_SCALED_OUTPUT) transformer -> scale_output = FFT_SCALED_OUTPUT;
     else transformer -> scale_output = FFT_UNSCALED_OUTPUT;
+
+    __fft_cosq_init(transformer -> n, transformer -> output, transformer -> ifac);
+
     return transformer;
 }
 

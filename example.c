@@ -27,17 +27,24 @@ void fftpack_fourier_forward()
 void wrapped_fourier()
 {
     printf("---------- wrapped fourier transform example ----------\n");
-    // Initialize input
+
+    // Initialize input signal
     int n = 201; // 10 seconds of data, n has to be greater than 1
     double sample_rate = 20; // signal sampling rate
     double f = 2;    // frequency of the artifical signal
-    double * input = (double *) malloc(n * sizeof(double));   //Input signal
+    double * input = (double *) alloca(n * sizeof(double));   //Input signal
     for(int i = 0; i < n; i ++) input[i] = sin(2 * PI * f * i/sample_rate);
 
-    FFTTransformer* transformer = create_fft_transformer(n, 0);
+    // Initialize fourier transformer
+    FFTTransformer* transformer = create_fft_transformer(n, FFT_SCALED_OUTPUT);
+
+    // Transform signal
     double * output = fft_forward(transformer, input);
 
+    // Print output
     for(int i = 0; i < transformer -> n; i ++) printf("freq:%f, mag: %f\n",i/sample_rate, fabs(output[i]));
+
+    free_fft_transformer(transformer);
     printf("---------- wrapped fourier transform example end ----------\n");
 
 }
