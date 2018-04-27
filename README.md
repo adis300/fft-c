@@ -1,5 +1,5 @@
 # fft-c
-FFTPACK is one of the package that has the best performance comparing all other tools. This repository makes fft.c from fftpack user-friendly.
+This repository makes fft.c from fftpack user-friendly. FFTPACK is a very high-performance fft tool even when compared to Apple's vDSP and many other libraries.
 
 Original code at [http://www.netlib.org/fftpack/](http://www.netlib.org/fftpack/)
 * `fft32` is the original package in float precision

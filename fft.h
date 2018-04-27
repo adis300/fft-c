@@ -4,7 +4,7 @@
  * Copyright (c) 2018 Disi A
  * 
  * Author: Disi A
- * Email: adis@live.cn
+ * Email: adis@alum.mit.edu
  * https://www.mathworks.com/matlabcentral/profile/authors/3734620-disi-a
  * 
  * http://www.netlib.org/fftpack/doc
@@ -77,7 +77,7 @@ void __fft_cosq_backward(int n,double *x,double *wsave,int *ifac);
 FFTTransformer * create_fft_transformer(int signal_length, int scale_output){
     FFTTransformer * transformer = (FFTTransformer *) malloc(sizeof(FFTTransformer));
     transformer -> ifac = (int *) calloc(FFT_IFAC, sizeof(int));
-    transformer -> output = (double *) malloc((2 * signal_length + 15) * sizeof(double));
+    transformer -> output = (double *) malloc((2 * signal_length + FFT_IFAC) * sizeof(double));
     transformer -> n = signal_length;
     if(scale_output == FFT_SCALED_OUTPUT) transformer -> scale_output = FFT_SCALED_OUTPUT;
     else transformer -> scale_output = FFT_UNSCALED_OUTPUT;
