@@ -1,3 +1,8 @@
+/**
+ * This file has been modified and reorganized by Disi A: 
+ * adis@live.cn
+ **/
+
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggSQUISH SOFTWARE CODEC SOURCE CODE.   *

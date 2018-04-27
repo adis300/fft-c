@@ -24,11 +24,11 @@ void fftpack_fourier_forward()
 
 }
 
-void wrapped_fourier()
+void fourier_example()
 {
     printf("---------- wrapped fourier transform example ----------\n");
 
-    // Initialize input signal
+    // Construct input signal
     int n = 201; // 10 seconds of data, n has to be greater than 1
     double sample_rate = 20; // signal sampling rate
     double f = 2;    // frequency of the artifical signal
@@ -52,7 +52,7 @@ void wrapped_fourier()
 int main() {   
     printf("========= FFT example =========\n\n");
     fftpack_fourier_forward();
-    wrapped_fourier();
+    fourier_example();
     printf("========= Done. =========\n\n");
     return 0;
 }
