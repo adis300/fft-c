@@ -120,7 +120,7 @@ static void drfti1(int n, double *wa, int *ifac){
 }
 
 // Initialization real fft transform
-void fft_real_init(int n, double *wsave, int *ifac){
+void __fft_real_init(int n, double *wsave, int *ifac){
     drfti1(n, wsave+n, ifac);
 }
 /*
@@ -132,7 +132,7 @@ void __ogg_fdrffti(int n, float *wsave, int *ifac){
 
 // Real quater-cosine initialization
 //void __ogg_fdcosqi(int n, float *wsave, int *ifac){
-void fft_cosq_init(int n, double *wsave, int *ifac){
+void __fft_cosq_init(int n, double *wsave, int *ifac){
   static double pih = 1.57079632679489661923132169163975;
   static int k;
   static double fk, dt;
@@ -144,7 +144,7 @@ void fft_cosq_init(int n, double *wsave, int *ifac){
     wsave[k] = cos(fk*dt);
   }
 
-  fft_real_init(n, wsave+n,ifac);
+  __fft_real_init(n, wsave+n,ifac);
 }
 
 static void dradf2(int ido,int l1,double *cc,double *ch,double *wa1){
@@ -663,7 +663,7 @@ static void drftf1(int n,double *c,double *ch,double *wa,int *ifac){
 }
 
 // Real forward transform
-void fft_real_forward(int n,double *r,double *wsave,int *ifac){
+void __fft_real_forward(int n,double *r,double *wsave,int *ifac){
     drftf1(n,r,wsave,wsave+n,ifac);
 }
 /*
@@ -699,7 +699,7 @@ static void dcsqf1(int n,double *x,double *w,double *xh,int *ifac){
 
   if(modn==0)x[ns2]=w[ns2-1]*xh[ns2];
 
-  fft_real_forward(n,x,xh,ifac);
+  __fft_real_forward(n,x,xh,ifac);
 
   for(i=2;i<n;i+=2){
     xim1=x[i-1]-x[i];
@@ -710,7 +710,7 @@ static void dcsqf1(int n,double *x,double *w,double *xh,int *ifac){
 
 // Real quarter-cosine forward 
 // void __ogg_fdcosqf(int n,float *x,float *wsave,int *ifac){
-void fft_cosq_forward(int n,double *x,double *wsave,int *ifac){
+void __fft_cosq_forward(int n,double *x,double *wsave,int *ifac){
     static double sqrt2=1.4142135623730950488016887242097;
     double tsqx;
 
@@ -1326,7 +1326,7 @@ static void drftb1(int n, double *c, double *ch, double *wa, int *ifac){
   for(i=0;i<n;i++)c[i]=ch[i];
 }
 
-void fft_real_backward(int n, double *r, double *wsave, int *ifac){
+void __fft_real_backward(int n, double *r, double *wsave, int *ifac){
     drftb1(n, r, wsave, wsave+n, ifac);
 }
 /*
@@ -1354,7 +1354,7 @@ static void dcsqb1(int n,double *x,double *w,double *xh,int *ifac){
   modn=n%2;
   if(modn==0)x[n-1]+=x[n-1];
 
-  fft_real_backward(n,x,xh,ifac);
+  __fft_real_backward(n,x,xh,ifac);
 
   kc=np2;
   for(k=1;k<ns2;k++){
@@ -1375,7 +1375,7 @@ static void dcsqb1(int n,double *x,double *w,double *xh,int *ifac){
 }
 
 // Real quater-cosine backward transform
-void fft_cosq_backward(int n,double *x,double *wsave,int *ifac){
+void __fft_cosq_backward(int n,double *x,double *wsave,int *ifac){
   static double tsqrt2 = 2.8284271247461900976033774484194;
   double x1;
 
