@@ -37,6 +37,7 @@
 extern "C" {
 #endif
 
+#define FFT_PRECISION double
 #define FFT_SCALED_OUTPUT 1
 #define FFT_UNSCALED_OUTPUT 0
 #define FFT_IFAC 15
@@ -44,7 +45,7 @@ extern "C" {
 typedef struct {
 
     int n;
-    double * output;
+    FFT_PRECISION * output;
     int * ifac;
     int scale_output; // 1 for scale and 0 for not scale
 
@@ -53,101 +54,42 @@ typedef struct {
 typedef struct {
 
     int n;
-    double * output;
+    FFT_PRECISION * output;
     int * ifac;
     int scale_output; // 1 for scale and 0 for not scale
 
 } FFTCosqTransformer;
 
 // Initialization real fft transform (__ogg_fdrffti)
-void __fft_real_init(int n, double *wsave, int *ifac);
+void __fft_real_init(int n, FFT_PRECISION *wsave, int *ifac);
 // Forward transform of a real periodic sequence (__ogg_fdrfftf)
-void __fft_real_forward(int n,double *r,double *wsave,int *ifac);
+void __fft_real_forward(int n,FFT_PRECISION *r,FFT_PRECISION *wsave,int *ifac);
 // Real FFT backward (__ogg_fdrfftb)
-void __fft_real_backward(int n, double *r, double *wsave, int *ifac); 
+void __fft_real_backward(int n, FFT_PRECISION *r, FFT_PRECISION *wsave, int *ifac); 
 
 // Initialize cosine quarter-wave transform (__ogg_fdcosqi)
-void __fft_cosq_init(int n, double *wsave, int *ifac);
+void __fft_cosq_init(int n, FFT_PRECISION *wsave, int *ifac);
 // Real cosine quarter-wave forward transform (__ogg_fdcosqf)
-void __fft_cosq_forward(int n,double *x,double *wsave,int *ifac);
+void __fft_cosq_forward(int n,FFT_PRECISION *x,FFT_PRECISION *wsave,int *ifac);
 // Real cosine quarter-wave backward transform (__ogg_fdcosqb)
-void __fft_cosq_backward(int n,double *x,double *wsave,int *ifac);
+void __fft_cosq_backward(int n,FFT_PRECISION *x,FFT_PRECISION *wsave,int *ifac);
 
 // Wrapper method with all fftpack parameters properly initilized
-FFTTransformer * create_fft_transformer(int signal_length, int scale_output){
-    FFTTransformer * transformer = (FFTTransformer *) malloc(sizeof(FFTTransformer));
-    transformer -> ifac = (int *) calloc(FFT_IFAC, sizeof(int));
-    transformer -> output = (double *) malloc((2 * signal_length + FFT_IFAC) * sizeof(double));
-    transformer -> n = signal_length;
-    if(scale_output == FFT_SCALED_OUTPUT) transformer -> scale_output = FFT_SCALED_OUTPUT;
-    else transformer -> scale_output = FFT_UNSCALED_OUTPUT;
-    
-    __fft_real_init(transformer -> n, transformer -> output, transformer -> ifac);
+FFTTransformer * create_fft_transformer(int signal_length, int scale_output);
 
-    return transformer;
-}
+void free_fft_transformer(FFTTransformer * transformer);
 
-void free_fft_transformer(FFTTransformer * transformer){
-    free(transformer -> output);
-    free(transformer -> ifac);
-    free(transformer);
-}
+FFT_PRECISION * fft_forward(FFTTransformer * transformer, FFT_PRECISION* input);
 
-double * fft_forward(FFTTransformer * transformer, double* input){
-    __fft_real_forward(transformer -> n, input, transformer -> output, transformer -> ifac);
-    // Rescale output for valid region
-    if(transformer -> scale_output == FFT_SCALED_OUTPUT){
-        for(int i = 0; i < transformer -> n; i++) transformer -> output[i] /= transformer -> n;
-    }
-    return transformer -> output;
-}
+FFT_PRECISION * fft_backward(FFTTransformer * transformer, FFT_PRECISION* input);
 
-double * fft_backward(FFTTransformer * transformer, double* input){
-    __fft_real_backward(transformer -> n, input, transformer -> output, transformer -> ifac);
+FFTCosqTransformer * create_fft_cosq_transformer(int signal_length, int scale_output);
 
-    // Rescale output for valid region
-    if(transformer -> scale_output == FFT_SCALED_OUTPUT){
-        for(int i = 0; i < transformer -> n; i++) transformer -> output[i] *= transformer -> n;
-    }
-    return transformer -> output;
-}
+void free_cosq_fft_transformer(FFTCosqTransformer * transformer);
 
-FFTCosqTransformer * create_fft_cosq_transformer(int signal_length, int scale_output){
-    FFTCosqTransformer * transformer = (FFTCosqTransformer *) malloc(sizeof(FFTCosqTransformer));
-    transformer -> ifac = (int *) calloc(FFT_IFAC, sizeof(int));
-    transformer -> output = (double *) malloc((3 * signal_length + FFT_IFAC) * sizeof(double));
-    transformer -> n = signal_length;
-    if(scale_output == FFT_SCALED_OUTPUT) transformer -> scale_output = FFT_SCALED_OUTPUT;
-    else transformer -> scale_output = FFT_UNSCALED_OUTPUT;
+FFT_PRECISION * fft_cosq_forward(FFTCosqTransformer * transformer, FFT_PRECISION* input);
 
-    __fft_cosq_init(transformer -> n, transformer -> output, transformer -> ifac);
-
-    return transformer;
-}
-
-void free_cosq_fft_transformer(FFTCosqTransformer * transformer){
-    free(transformer -> output);
-    free(transformer -> ifac);
-    free(transformer);
-}
-
-double * fft_cosq_forward(FFTCosqTransformer * transformer, double* input){
-    __fft_cosq_forward(transformer -> n, input, transformer -> output, transformer -> ifac);
-    // Rescale output for valid region
-    if(transformer -> scale_output == FFT_SCALED_OUTPUT){
-        for(int i = 0; i < transformer -> n; i++) transformer -> output[i] /= transformer -> n;
-    }
-    return transformer -> output;
-}
-
-double * fft_cosq_backward(FFTCosqTransformer * transformer, double* input){
-    __fft_cosq_backward(transformer -> n, input, transformer -> output, transformer -> ifac);
-    // Rescale output for valid region
-    if(transformer -> scale_output == FFT_SCALED_OUTPUT){
-        for(int i = 0; i < transformer -> n; i++) transformer -> output[i] *= transformer -> n;
-    }
-    return transformer -> output;
-}
+FFT_PRECISION * fft_cosq_backward(FFTCosqTransformer * transformer, FFT_PRECISION* input);
 
 #ifdef __cplusplus
 }

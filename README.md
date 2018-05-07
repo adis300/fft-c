@@ -2,8 +2,6 @@
 This repository makes fft.c from fftpack user-friendly. FFTPACK is a very high-performance fft tool even when compared to Apple's vDSP and many other libraries.
 
 Original code at [http://www.netlib.org/fftpack/](http://www.netlib.org/fftpack/)
-* `fft32` is the original package in float precision
-* `fft` is the default package using double precision for modern computers
 
 # Alternative libraries
 * CCMATH: [http://freshmeat.sourceforge.net/projects/ccmath](http://freshmeat.sourceforge.net/projects/ccmath)
@@ -15,6 +13,7 @@ make example
 ```
 
 # Steps to transform your signal
+0. You can edit `FFT_PRECISION` in `fft.h` to use `double or float`
 1. Create and manage your input signal, including memory
 2. Initialize fourier transformer
 ```
