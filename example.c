@@ -29,8 +29,9 @@ void fourier_example()
     printf("---------- wrapped fourier transform example ----------\n");
 
     // Construct input signal
-    int n = 201; // 10 seconds of data, n has to be greater than 1
     double sample_rate = 20; // signal sampling rate
+    int T = 10; 
+    int n = T * sample_rate + 1; // 10 seconds of data, n has to be greater than 1
     double f = 2;    // frequency of the artifical signal
     double * input = (double *) alloca(n * sizeof(double));   //Input signal
     for(int i = 0; i < n; i ++) input[i] = sin(2 * PI * f * i/sample_rate);
@@ -42,7 +43,7 @@ void fourier_example()
     double * output = fft_forward(transformer, input);
 
     // Print output
-    for(int i = 0; i < transformer -> n; i ++) printf("freq:%f, mag: %f\n",i/sample_rate, fabs(output[i]));
+    for(int i = 0; i < transformer -> n; i ++) printf("freq:%f, mag: %f\n", (double)i/(2*T), fabs(output[i]));
 
     free_fft_transformer(transformer);
     printf("---------- wrapped fourier transform example end ----------\n");
