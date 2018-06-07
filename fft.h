@@ -45,7 +45,7 @@ extern "C" {
 typedef struct {
 
     int n;
-    FFT_PRECISION * output;
+    FFT_PRECISION * wsave;
     int * ifac;
     int scale_output; // 1 for scale and 0 for not scale
 
@@ -54,7 +54,7 @@ typedef struct {
 typedef struct {
 
     int n;
-    FFT_PRECISION * output;
+    FFT_PRECISION * wsave;
     int * ifac;
     int scale_output; // 1 for scale and 0 for not scale
 
@@ -79,17 +79,17 @@ FFTTransformer * create_fft_transformer(int signal_length, int scale_output);
 
 void free_fft_transformer(FFTTransformer * transformer);
 
-FFT_PRECISION * fft_forward(FFTTransformer * transformer, FFT_PRECISION* input);
+void fft_forward(FFTTransformer * transformer, FFT_PRECISION* input);
 
-FFT_PRECISION * fft_backward(FFTTransformer * transformer, FFT_PRECISION* input);
+void fft_backward(FFTTransformer * transformer, FFT_PRECISION* input);
 
 FFTCosqTransformer * create_fft_cosq_transformer(int signal_length, int scale_output);
 
 void free_cosq_fft_transformer(FFTCosqTransformer * transformer);
 
-FFT_PRECISION * fft_cosq_forward(FFTCosqTransformer * transformer, FFT_PRECISION* input);
+void fft_cosq_forward(FFTCosqTransformer * transformer, FFT_PRECISION* input);
 
-FFT_PRECISION * fft_cosq_backward(FFTCosqTransformer * transformer, FFT_PRECISION* input);
+void fft_cosq_backward(FFTCosqTransformer * transformer, FFT_PRECISION* input);
 
 #ifdef __cplusplus
 }
