@@ -1403,7 +1403,7 @@ void __fft_cosq_backward(int n,FFT_PRECISION *x,FFT_PRECISION *wsave,int *ifac){
 FFTTransformer * create_fft_transformer(int signal_length, int scale_output){
     FFTTransformer * transformer = (FFTTransformer *) malloc(sizeof(FFTTransformer));
     transformer -> ifac = (int *) calloc(FFT_IFAC, sizeof(int));
-    transformer -> output = (FFT_PRECISION *) malloc((2 * signal_length + FFT_IFAC) * sizeof(FFT_PRECISION));
+    transformer -> output = (FFT_PRECISION *) malloc((2 * signal_length + 15) * sizeof(FFT_PRECISION));
     transformer -> n = signal_length;
     if(scale_output == FFT_SCALED_OUTPUT) transformer -> scale_output = FFT_SCALED_OUTPUT;
     else transformer -> scale_output = FFT_UNSCALED_OUTPUT;
@@ -1441,7 +1441,7 @@ FFT_PRECISION * fft_backward(FFTTransformer * transformer, FFT_PRECISION* input)
 FFTCosqTransformer * create_fft_cosq_transformer(int signal_length, int scale_output){
     FFTCosqTransformer * transformer = (FFTCosqTransformer *) malloc(sizeof(FFTCosqTransformer));
     transformer -> ifac = (int *) calloc(FFT_IFAC, sizeof(int));
-    transformer -> output = (FFT_PRECISION *) malloc((3 * signal_length + FFT_IFAC) * sizeof(FFT_PRECISION));
+    transformer -> output = (FFT_PRECISION *) malloc((3 * signal_length + 15) * sizeof(FFT_PRECISION));
     transformer -> n = signal_length;
     if(scale_output == FFT_SCALED_OUTPUT) transformer -> scale_output = FFT_SCALED_OUTPUT;
     else transformer -> scale_output = FFT_UNSCALED_OUTPUT;
