@@ -33,7 +33,6 @@ void fourier_example()
     double sample_rate = 160.6; // signal sampling rate
     int T = 3;
     int n = T * sample_rate; // 10 seconds of data, n has to be greater than 1
-    n=159;
     double f = 2;    // frequency of the artifical signal
     double * input = (double *) alloca(n * sizeof(double));   //Input signal
     
@@ -42,26 +41,31 @@ void fourier_example()
         printf("%lf,",i/sample_rate);
     }
     printf("\n Raw seperator =======\n");
-    for(int i = 0; i < n; i ++) {
-        if(i > n/2) input[i] = 10 * sin(2 * PI * 50 * i/sample_rate) + 5 * sin(2*PI*40*i/sample_rate);
-        // else input[i] = sin(2 * PI * 50 * i/sample_rate) + cos(2 * PI * 70 * i/sample_rate);
-        printf("%lf,",input[i]);
-    }
+    for(int i = 0; i < n; i ++)  input[i] = 10 * sin(2 * PI * 50 * i/sample_rate) + 5 * sin(2*PI*40*i/sample_rate);
+
 
     // Initialize fourier transformer
     FFTTransformer* transformer = create_fft_transformer(n, FFT_SCALED_OUTPUT);
 
+
     // Transform signal
     fft_forward(transformer, input);
-    printf("\nSeperator =======\n");
-    //for(int i = 0; i < transformer -> n; i ++) printf("f:%f,mag:%f\n", (double)i/(T*2),fabs(output[i]));
-    
-    for(int i = 0; i < transformer -> n; i ++) printf("%f,", (double)i/(2*T));
-    printf("\nSeperator =======\n");
-    // Print output
-    for(int i = 0; i < transformer -> n; i ++) printf("%f,", fabs(input[i]));
 
-    printf("\nSeperator =======\n");
+    printf("\n1 Seperator =======\n");
+    // Print output
+    for(int i = 0; i < 50; i ++) printf("%f,", fabs(input[i]));
+    printf("\n1 Seperator =======\n");
+
+    for(int i = 0; i < n; i ++)  input[i] = 10 * sin(2 * PI * 50 * i/sample_rate) + 5 * sin(2*PI*40*i/sample_rate);
+    fft_forward(transformer, input);
+    for(int i = 0; i < n; i ++)  input[i] = 10 * sin(2 * PI * 50 * i/sample_rate) + 5 * sin(2*PI*40*i/sample_rate);
+    fft_forward(transformer, input);
+
+    printf("\n2 Seperator =======\n");
+    // Print output
+    for(int i = 0; i < 50; i ++) printf("%f,", fabs(input[i]));
+    printf("\n2 Seperator =======\n");
+
     free_fft_transformer(transformer);
     printf("---------- wrapped fourier transform example end ----------\n");
 
