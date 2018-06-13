@@ -18,7 +18,7 @@ void fftpack_fourier_forward()
 
     __fft_real_init(n, wsave, ifac);
     __fft_real_forward(n, input, wsave, ifac);
-    for(int i = 0; i < n; i ++) printf("freq:%f, mag: %f\n",i/sample_rate, fabs(wsave[i]/n));
+    for(int i = 0; i < n; i +=2) printf("Cos component freq:%f, mag: %f\n",i/sample_rate, fabs(wsave[i]/n));
 
     printf("---------- fftpack fourier example end ----------\n");
 
@@ -51,20 +51,8 @@ void fourier_example()
     // Transform signal
     fft_forward(transformer, input);
 
-    printf("\n1 Seperator =======\n");
     // Print output
-    for(int i = 0; i < 50; i ++) printf("%f,", fabs(input[i]));
-    printf("\n1 Seperator =======\n");
-
-    for(int i = 0; i < n; i ++)  input[i] = 10 * sin(2 * PI * 50 * i/sample_rate) + 5 * sin(2*PI*40*i/sample_rate);
-    fft_forward(transformer, input);
-    for(int i = 0; i < n; i ++)  input[i] = 10 * sin(2 * PI * 50 * i/sample_rate) + 5 * sin(2*PI*40*i/sample_rate);
-    fft_forward(transformer, input);
-
-    printf("\n2 Seperator =======\n");
-    // Print output
-    for(int i = 0; i < 50; i ++) printf("%f,", fabs(input[i]));
-    printf("\n2 Seperator =======\n");
+    for(int i = 0; i < n; i +=2) printf("Cos::Freq:%f,Mag:%f\n",i/sample_rate, fabs(input[i]));
 
     free_fft_transformer(transformer);
     printf("---------- wrapped fourier transform example end ----------\n");
