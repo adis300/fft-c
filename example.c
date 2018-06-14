@@ -53,6 +53,7 @@ void fourier_example()
 
     // Print output
     for(int i = 0; i < n; i +=2) printf("Cos::Freq:%f,Mag:%f\n",i/sample_rate, fabs(input[i]));
+    for(int i = 1; i < n; i +=2) printf("Sin::Freq:%f,Mag:%f\n",i/sample_rate, fabs(input[i]));
 
     free_fft_transformer(transformer);
     printf("---------- wrapped fourier transform example end ----------\n");
