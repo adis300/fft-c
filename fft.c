@@ -55,6 +55,14 @@
 #include <math.h>
 #include "fft.h"
 
+#if FFT_PRECISION == float
+#define COS cosf
+#define SIN sinf
+#else
+#define COS cos
+#define SIN sin
+#endif
+
 static void drfti1(int n, FFT_PRECISION *wa, int *ifac){
   static int ntryh[4] = { 4,2,3,5 };
   static FFT_PRECISION tpi = 6.28318530717958647692528676655900577;
@@ -116,8 +124,8 @@ static void drfti1(int n, FFT_PRECISION *wa, int *ifac){
       for (ii=2;ii<ido;ii+=2){
 	fi+=1.;
 	arg=fi*argld;
-	wa[i++]=cos(arg);
-	wa[i++]=sin(arg);
+	wa[i++]=COS(arg);
+	wa[i++]=SIN(arg);
       }
       is+=ido;
     }
@@ -317,8 +325,8 @@ static void dradfg(int ido,int ip,int l1,int idl1,FFT_PRECISION *cc,FFT_PRECISIO
   int idp2,ipp2;
   
   arg=tpi/(FFT_PRECISION)ip;
-  dcp=cos(arg);
-  dsp=sin(arg);
+  dcp=COS(arg);
+  dsp=SIN(arg);
   ipph=(ip+1)>>1;
   ipp2=ip;
   idp2=ido;
@@ -953,8 +961,8 @@ static void dradbg(int ido,int ip,int l1,int idl1,FFT_PRECISION *cc,FFT_PRECISIO
   t10=ip*ido;
   t0=l1*ido;
   arg=tpi/(FFT_PRECISION)ip;
-  dcp=cos(arg);
-  dsp=sin(arg);
+  dcp=COS(arg);
+  dsp=SIN(arg);
   nbd=(ido-1)>>1;
   ipp2=ip;
   ipph=(ip+1)>>1;
