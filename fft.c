@@ -55,7 +55,7 @@
 #include <math.h>
 #include "fft.h"
 
-#if DOUBLE_PRECISION
+#if USE_DOUBLE_PRECISION
 #define COS cosf
 #define SIN sinf
 #else
