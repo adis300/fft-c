@@ -55,7 +55,7 @@
 #include <math.h>
 #include "fft.h"
 
-#if FFT_PRECISION == float
+#if DOUBLE_PRECISION
 #define COS cosf
 #define SIN sinf
 #else

@@ -37,10 +37,16 @@
 extern "C" {
 #endif
 
-#define FFT_PRECISION double
+#define USE_DOUBLE_PRECISION 0
 #define FFT_SCALED_OUTPUT 1
 #define FFT_UNSCALED_OUTPUT 0
 #define FFT_IFAC 15
+
+#if USE_DOUBLE_PRECISION
+#define FFT_PRECISION double
+#else
+#define FFT_PRECISION float
+#endif
 
 typedef struct {
 
