@@ -56,11 +56,11 @@
 #include "fft.h"
 
 #if USE_DOUBLE_PRECISION
-#define COS cosf
-#define SIN sinf
-#else
 #define COS cos
 #define SIN sin
+#else
+#define COS cosf
+#define SIN sinf
 #endif
 
 static void drfti1(int n, FFT_PRECISION *wa, int *ifac){
