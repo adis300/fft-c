@@ -18,7 +18,7 @@ void fftpack_fourier_forward()
 
     __fft_real_init(n, wsave, ifac);
     __fft_real_forward(n, input, wsave, ifac);
-    for(int i = 0; i < n; i +=2) printf("Cos component freq:%f, mag: %f\n",i/sample_rate, fabs(wsave[i]/n));
+    for(int i = 0; i < n; i +=2) printf("Cos component freq:%f, mag: %f\n",i*sample_rate/n, fabs(wsave[i]/n));
 
     printf("---------- fftpack fourier example end ----------\n");
 
@@ -30,18 +30,23 @@ void fourier_example()
     printf("---------- wrapped fourier transform example ----------\n");
 
     // Construct input signal
-    double sample_rate = 160.6; // signal sampling rate
+    FFT_PRECISION sample_rate = 160; // signal sampling rate
     int T = 3;
-    int n = T * sample_rate; // 10 seconds of data, n has to be greater than 1
-    double f = 2;    // frequency of the artifical signal
-    double * input = (double *) alloca(n * sizeof(double));   //Input signal
+    int n = T * sample_rate; // 3 seconds of data, n has to be greater than 1
+    FFT_PRECISION f = 2;    // frequency of the artifical signal
+    FFT_PRECISION * input = (FFT_PRECISION *) alloca(n * sizeof(FFT_PRECISION));   //Input signal
     
-    printf("\n Time seperator =======\n");
-    for(int i = 0; i < n; i ++) {
+    printf("\nTime data START =======\n");
+    for(int i = 0; i < n; i ++) 
         printf("%lf,",i/sample_rate);
+    printf("\nTime data END =======\n");
+
+    printf("\nRaw data START =======\n");
+    for(int i = 0; i < n; i ++) {
+        input[i] = 10 * sin(2 * PI * f * i/sample_rate); //2*PI*f*t+ 5 * sin(2*PI*40*i/sample_rate);
+        printf("%lf,",input[i]);
     }
-    printf("\n Raw seperator =======\n");
-    for(int i = 0; i < n; i ++)  input[i] = 10 * sin(2 * PI * 50 * i/sample_rate) + 5 * sin(2*PI*40*i/sample_rate);
+    printf("\nRaw data END =======\n");
 
 
     // Initialize fourier transformer
@@ -52,9 +57,16 @@ void fourier_example()
     fft_forward(transformer, input);
 
     // Print output
-    for(int i = 0; i < n; i +=2) printf("Cos::Freq:%f,Mag:%f\n",i/sample_rate, fabs(input[i]));
-    for(int i = 1; i < n; i +=2) printf("Sin::Freq:%f,Mag:%f\n",i/sample_rate, fabs(input[i]));
+    for(int i = 0; i < n; i +=2) {
+        FFT_PRECISION cos_mag = input[i];
+        FFT_PRECISION sin_mag = input[i+1];
+        FFT_PRECISION mag = sqrt(cos_mag * cos_mag + sin_mag * sin_mag);
+        FFT_PRECISION freq = i/2*sample_rate/n;
+        printf("Freq:%f,Mag:%f\n", freq, mag);
+    }
 
+    // for(int i = 1; i < n; i +=2) printf("Sin::Freq:%f,Mag:%f\n",i*sample_rate/n, fabs(input[i]));
+    
     free_fft_transformer(transformer);
     printf("---------- wrapped fourier transform example end ----------\n");
 
@@ -62,7 +74,7 @@ void fourier_example()
 
 int main() {   
     printf("========= FFT example =========\n\n");
-    fftpack_fourier_forward();
+    //fftpack_fourier_forward();
     fourier_example();
     printf("========= Done. =========\n\n");
     return 0;

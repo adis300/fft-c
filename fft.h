@@ -37,7 +37,7 @@
 extern "C" {
 #endif
 
-#define USE_DOUBLE_PRECISION 0
+#define USE_DOUBLE_PRECISION 1
 #define FFT_SCALED_OUTPUT 1
 #define FFT_UNSCALED_OUTPUT 0
 #define FFT_IFAC 15
