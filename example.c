@@ -33,7 +33,7 @@ void fourier_example()
 
     // Construct input signal
     FFT_PRECISION sample_rate = 160; // signal sampling rate
-    int T = 3;
+    int T = 10;
     int n = T * sample_rate; // 3 seconds of data, n has to be greater than 1
     FFT_PRECISION f = 2;    // frequency of the artifical signal
     FFT_PRECISION * input = (FFT_PRECISION *) alloca(n * sizeof(FFT_PRECISION));   //Input signal
@@ -45,11 +45,11 @@ void fourier_example()
 
     printf("\nRaw data START =======\n");
     for(int i = 0; i < n; i ++) {
-        input[i] = 10 * sin(2 * PI * f * i/sample_rate); //2*PI*f*t+ 5 * sin(2*PI*40*i/sample_rate);
+         //2*PI*f*t
+        input[i] = 10 * sin(2 * PI * f * i/sample_rate)+ 5 * cos(2*PI*15*i/sample_rate);
         printf("%lf,",input[i]);
     }
     printf("\nRaw data END =======\n");
-
 
     // Initialize fourier transformer
     FFTTransformer* transformer = create_fft_transformer(n, FFT_SCALED_OUTPUT);
@@ -59,11 +59,13 @@ void fourier_example()
 
     // Print output
     for(int i = 0; i < n; i +=2) {
+        FFT_PRECISION freq = i / 2 * sample_rate / n;
         FFT_PRECISION cos_comp = input[i];
         FFT_PRECISION sin_comp = input[i+1];
-        FFT_PRECISION mag = sqrt(cos_comp * cos_comp + sin_comp * sin_comp);
-        FFT_PRECISION freq = i / 2 * sample_rate / n;
-        printf("Freq:%f,Mag:%f\n", freq, mag);
+        FFT_PRECISION mag = sqrt((cos_comp * cos_comp) + (sin_comp * sin_comp));
+        // printf("Freq:%f,COS:%f\n", freq, cos_comp);
+        // printf("Freq:%f,SIN:%f\n", freq, sin_comp);
+        printf("Freq:%f,MAG:%f\n", freq, mag);
     }
 
     // for(int i = 1; i < n; i +=2) printf("Sin::Freq:%f,Mag:%f\n",i*sample_rate/n, fabs(input[i]));
