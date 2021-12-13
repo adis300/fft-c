@@ -63,6 +63,85 @@
 #define SIN sinf
 #endif
 
+/* Reference: "Numerical Recipes in C" 2nd Ed.
+ * by W.H.Press, S.A.Teukolsky, W.T.Vetterling, B.P.Flannery
+ * (1992) Cambridge University Press.
+ * ISBN 0-521-43108-5
+ * Sec.13.4 - Data Windowing
+ */
+FFT_PRECISION parzen (int i, int nn){
+    return (1.0 - fabs (((FFT_PRECISION)i-0.5*(FFT_PRECISION)(nn-1))/(0.5*(FFT_PRECISION)(nn+1))));
+}
+
+FFT_PRECISION welch (int i, int nn){
+    return (1.0-(((FFT_PRECISION)i-0.5*(FFT_PRECISION)(nn-1))/(0.5*(FFT_PRECISION)(nn+1)))*(((FFT_PRECISION)i-0.5*(FFT_PRECISION)(nn-1))/(0.5*(FFT_PRECISION)(nn+1))));
+}
+
+FFT_PRECISION hanning (int i, int nn) {
+    return ( 0.5 * (1.0 - cos (2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1))) );
+}
+
+/* Reference: "Digital Filters and Signal Processing" 2nd Ed.
+ * by L. B. Jackson. (1989) Kluwer Academic Publishers.
+ * ISBN 0-89838-276-9
+ * Sec.7.3 - Windows in Spectrum Analysis
+ */
+FFT_PRECISION hamming (int i, int nn){
+    return ( 0.54 - 0.46 * cos (2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) );
+}
+
+FFT_PRECISION blackman (int i, int nn) {
+     return ( 0.42 - 0.5 * cos (2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) + 0.08 * cos (4.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) );
+}
+
+FFT_PRECISION steeper (int i, int nn) {
+    return ( 0.375 - 0.5 * cos (2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) + 0.125 * cos (4.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) );
+}
+
+/* apply window function to data[]
+ * INPUT
+ *  flag_window : 0 : no-window (default -- that is, other than 1 ~ 6)
+ *                1 : parzen window
+ *                2 : welch window
+ *                3 : hanning window
+ *                4 : hamming window
+ *                5 : blackman window
+ *                6 : steeper 30-dB/octave rolloff window
+ */
+typedef FFT_PRECISION (*WindowFunc)(int input_index, int nn);
+
+FFT_PRECISION* windowing(int n, const FFT_PRECISION *input, FFTWindow window_type, FFT_PRECISION scale) {   
+    WindowFunc window_func = NULL;
+    switch (window_type)
+    {
+        case NO_WINDOW:
+            return NULL;
+        case PARZEN:
+            window_func = &parzen;
+            break;
+        case WELCH:
+            window_func = &welch;
+            break;
+        case HANNING:
+            window_func = &hanning;
+            break;
+        case HAMMING:
+            window_func = &hamming;
+            break;
+        case BLACKMAN:
+            window_func = &blackman;
+            break;
+        case STEEPER:
+            window_func = &steeper;
+            break;
+        default:
+            return NULL;
+    }
+    FFT_PRECISION* output = (FFT_PRECISION*) malloc(n* sizeof(FFT_PRECISION));
+    for(int i = 0; i < n; i++) output[i] = input[i] * window_func(i, n) / scale;
+    return output;
+}
+
 static void drfti1(int n, FFT_PRECISION *wa, int *ifac){
   static int ntryh[4] = { 4,2,3,5 };
   static FFT_PRECISION tpi = 6.28318530717958647692528676655900577;

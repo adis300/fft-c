@@ -66,6 +66,17 @@ typedef struct {
 
 } FFTCosqTransformer;
 
+typedef enum {
+    NO_WINDOW = 0,
+    PARZEN = 1,
+    WELCH = 2,
+    HANNING = 3,
+    HAMMING = 4,
+    BLACKMAN = 5,
+    STEEPER = 6 // steeper 30-dB/octave rolloff window
+} FFTWindow;
+FFT_PRECISION* windowing(int n, const FFT_PRECISION *input, FFTWindow window_type, FFT_PRECISION scale);
+
 // Initialization real fft transform (__ogg_fdrffti)
 void __fft_real_init(int n, FFT_PRECISION *wsave, int *ifac);
 // Forward transform of a real periodic sequence (__ogg_fdrfftf)
