@@ -78,7 +78,7 @@ FFT_PRECISION welch (int i, int nn){
 }
 
 FFT_PRECISION hanning (int i, int nn) {
-    return ( 0.5 * (1.0 - cos (2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1))) );
+    return (0.5 * (1.0 - cos (2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1))));
 }
 
 /* Reference: "Digital Filters and Signal Processing" 2nd Ed.
@@ -87,15 +87,15 @@ FFT_PRECISION hanning (int i, int nn) {
  * Sec.7.3 - Windows in Spectrum Analysis
  */
 FFT_PRECISION hamming (int i, int nn){
-    return ( 0.54 - 0.46 * COS(2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) );
+    return (0.54 - 0.46 * COS(2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)));
 }
 
 FFT_PRECISION blackman (int i, int nn) {
-     return ( 0.42 - 0.5 * COS(2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) + 0.08 * COS(4.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) );
+     return (0.42 - 0.5 * COS(2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) + 0.08 * COS(4.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)));
 }
 
 FFT_PRECISION steeper (int i, int nn) {
-    return ( 0.375 - 0.5 * COS(2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) + 0.125 * COS(4.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) );
+    return (0.375 - 0.5 * COS(2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)) + 0.125 * COS(4.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1)));
 }
 
 /* apply window function to data[]
