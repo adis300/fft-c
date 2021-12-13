@@ -78,7 +78,7 @@ FFT_PRECISION welch (int i, int nn){
 }
 
 FFT_PRECISION hanning (int i, int nn) {
-    return (0.5 * (1.0 - cos (2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1))));
+    return (0.5 * (1.0 - COS(2.0*M_PI*(FFT_PRECISION)i/(FFT_PRECISION)(nn-1))));
 }
 
 /* Reference: "Digital Filters and Signal Processing" 2nd Ed.
