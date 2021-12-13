@@ -63,6 +63,10 @@
 #define SIN sinf
 #endif
 
+#if defined(_WIN32)
+#define M_PI 3.141592653589793238462643383279502884197163993751
+#endif
+
 /* Reference: "Numerical Recipes in C" 2nd Ed.
  * by W.H.Press, S.A.Teukolsky, W.T.Vetterling, B.P.Flannery
  * (1992) Cambridge University Press.
